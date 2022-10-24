@@ -65,3 +65,20 @@ Migration Status: PENDING
   -- Executed Files:  0
   -- Pending Files:   2
 ```
+
+5. See database detail in addition (we cannot find `migration_history` table available)
+
+```bash
+$ sqlite3 main.db
+SQLite version 3.31.1 2020-01-27 19:55:54
+Enter ".help" for usage hints.
+sqlite> .schema
+CREATE TABLE `atlas_schema_revisions` (`version` text NOT NULL, `description` text NOT NULL, `type` integer NOT NULL DEFAULT 2, `applied` integer NOT NULL DEFAULT 0, `total` integer NOT NULL DEFAULT 0, `executed_at` datetime NOT NULL, `execution_time` integer NOT NULL, `error` text NULL, `error_stmt` text NULL, `hash` text NOT NULL, `partial_hashes` json NULL, `operator_version` text NOT NULL, PRIMARY KEY (`version`));
+CREATE TABLE `todos` (`id` uuid NOT NULL, `text` text NOT NULL, `done` bool NOT NULL DEFAULT false, `updated_at` datetime NOT NULL, `created_at` datetime NOT NULL, `user_todos` uuid NOT NULL, PRIMARY KEY (`id`), CONSTRAINT `todos_users_todos` FOREIGN KEY (`user_todos`) REFERENCES `users` (`id`) ON DELETE NO ACTION);
+CREATE TABLE `users` (`id` uuid NOT NULL, `name` text NOT NULL, `created_at` datetime NOT NULL, PRIMARY KEY (`id`));
+CREATE TABLE `categories` (`id` uuid NOT NULL, `name` text NOT NULL, `created_at` datetime NOT NULL, PRIMARY KEY (`id`));
+CREATE TABLE `category_todos` (`category_id` uuid NOT NULL, `todo_id` uuid NOT NULL, PRIMARY KEY (`category_id`, `todo_id`), CONSTRAINT `category_todos_category_id` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE CASCADE, CONSTRAINT `category_todos_todo_id` FOREIGN KEY (`todo_id`) REFERENCES `todos` (`id`) ON DELETE CASCADE);
+sqlite> .table
+atlas_schema_revisions  category_todos          users
+categories              todos
+```
