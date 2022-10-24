@@ -1,5 +1,5 @@
 # How to reproduce
-Check migration status beforehand.
+1. Check migration status beforehand.
 
 ```bash
 make migration/status
@@ -14,7 +14,7 @@ Migration Status: PENDING
   -- Pending Files:   2
 ```
 
-Run migration then.
+2. Run migration then.
 
 ```bash
 $ make migration/run
@@ -40,7 +40,7 @@ Migrating to version 20221021082152 (2 migrations in total):
   -- 4 sql statements
 ```
 
-Try migrating again to see no migration available anymore
+3. Try migrating again to see no migration available anymore
 
 ```bash
 $ make migration/run
@@ -51,7 +51,7 @@ go run -mod=mod ariga.io/atlas/cmd/atlas@master migrate apply \
 No migration files to execute
 ```
 
-See migration status again, then it unexpectedly says that there are pending migrations, even though we cannot run migration again.
+4. See migration status again, then it unexpectedly says that there are pending migrations, even though we cannot run migration again.
 
 ```bash
 make migration/status
